@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Rock Paper Scissors</title>
+</head>
+
+<body>
+
+    <script>
+        let playerScore = 0;
+        let computerScore = 0;
+
+        function game() {
+            let playerSelection;
+            let computerSelection;
+
+            for (let i = 0; i < 5; i++) {
+                playerSelection = playerTurn();
+                computerSelection = computerTurn();
+                playGame(playerSelection, computerSelection);
+            }
+
+            endGame();
+        }
+
+        function playerTurn() {
+            let playerSelection = prompt('Choose rock, paper, or scissors', '');
+            if (!checkValidSelection(playerSelection)) {
+                alert('Invalid selection! Try again.');
+
+                return playerTurn();
+            }
+            return playerSelection.toLowerCase();
+        }
+
+        function computerTurn() {
+            let computerChoices = ['rock', 'paper', 'scissors'];
+            return computerChoices[randomInt(0, 2)];
+        }
+
+        function playGame(playerSelection, computerSelection) {
+            let outcome = findWinner(playerSelection, computerSelection);
+            if (outcome === 1) {
+                alert(`Computer also chooses ${computerSelection}. It's a draw! `);
+            } else if (outcome === 2) {
+                playerScore++;
+                alert(`Computer chooses ${computerSelection}. You win! ${playerSelection} beats ${computerSelection}`);
+            } else {
+                computerScore++;
+                alert(`Computer chooses ${computerSelection}. You loose! ${computerSelection} beats ${playerSelection}`);
+            }
+        }
+
+        function findWinner(playerSelection, computerSelection) {
+            let outcome;
+            if (playerSelection === computerSelection) {
+                outcome = 1;
+                return outcome;
+            }
+            switch (playerSelection) {
+                case 'rock': computerSelection === 'scissors' ? outcome = 2 : outcome = 3; break;
+                case 'paper': computerSelection === 'rock' ? outcome = 2 : outcome = 3; break;
+                case 'scissors': computerSelection === 'paper' ? outcome = 2 : outcome = 3; break;
+            }
+            return outcome;
+        }
+
+        function checkValidSelection(playerSelection) {
+            let string = playerSelection.toLowerCase();
+            switch (string) {
+                case 'rock': return true; break;
+                case 'paper': return true; break;
+                case 'scissors': return true; break;
+                default: return false; break;
+            }
+        }
+
+        function randomInt(min, max) {
+            return Math.floor(Math.random() * (max - min + 1) + min);
+        }
+
+        let endGame = () => {
+            alert(`Of 5 games, you won ${playerScore}. Computer won ${computerScore} games. ${5 - (+playerScore + +computerScore)} games were a draw.`);
+            resetScores();
+        }
+
+        let resetScores = () => {
+            playerScore = 0;
+            computerScore = 0;
+        }
+    </script>
+</body>
+
+</html>
